@@ -103,7 +103,11 @@ int main(int argc, char **argv)
     i  = 0;
     j = 0;
     if(argc == 1)
-        return(0);
+    {
+        printf("no input ");    
+    return(0);
+    }
+
     ptr = ft_split(argv[1],' ');
     if(!ptr)
         return(0);
