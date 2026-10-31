@@ -102,6 +102,7 @@ int main(int argc, char **argv)
         }
             i++;
     }
+    free_str(ptr,ft_lstsize(head));
     if(!cheak_duplicate(head))
         return (0);
     t_list *curr = head; 
@@ -110,4 +111,5 @@ int main(int argc, char **argv)
         printf("%i\n", curr->number);
         curr = curr->next;
     }
+    ft_lstclear(&head);
 }

@@ -56,9 +56,24 @@ void	ft_lstclear(t_list **lst)
 	}
 	*lst = NULL;
 }
+unsigned int	ft_lstsize(t_list *lst)
+{
+	unsigned int	count;
+	t_list			*str;
 
+	count = 0;
+	str = lst;
+	if (!lst)
+		return (0);
+	while (str)
+	{
+		str = str -> next;
+		count++;
+	}
+	return (count);
+}
 
-static void	free_str(char **str, int len)
+void	free_str(char **str, int len)
 {
 	int	i;	
 

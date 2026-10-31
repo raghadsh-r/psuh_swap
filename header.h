@@ -20,4 +20,6 @@ void	ft_lstddelone(t_list *lst);
 void	ft_lstclear(t_list **lst);
 char	**ft_split(char const *s, char c);
 void	ft_lstadd_back(t_list **lst, t_list *new);
+void	free_str(char **str, int len);
+unsigned int	ft_lstsize(t_list *lst);
 #endif
