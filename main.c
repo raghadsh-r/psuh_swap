@@ -104,15 +104,19 @@ int main(int argc, char **argv)
     j = 0;
     if(argc == 1)
     {
-        printf("no input ");    
-    return(0);
+        printf("no input\n");    
+        return(0);
     }
 
     ptr = ft_split(argv[1],' ');
     if(!ptr)
         return(0);
     if(!chrak_if_is_number(ptr))
+    {
+        printf("Invalid input\n");
+        free_str(ptr,count_word((char const *)ptr,' '));
         return(0);
+    }
     t_list *head;
     head = NULL;
     while(ptr[i])
@@ -121,12 +125,14 @@ int main(int argc, char **argv)
         point = ft_lstnew(ft_atoi(ptr[i]));
         if(!point)
         {
+            printf("allocate fail\n");   
             ft_lstclear(&head);
             return 0;
         }
         ft_lstadd_back(&head,point);
         if(!head)
-        {   
+        {    
+            printf("allocate fail\n");   
             ft_lstclear(&head);
             return 0;
         }
@@ -135,7 +141,11 @@ int main(int argc, char **argv)
     len = ft_lstsize(head);
     free_str(ptr,len);
     if(!cheak_duplicate(head))
+     {  
+        printf("found duplicate\n");   
+        ft_lstclear(&head);
         return (0);
+     }
     t_list *curr = head;
     printf("%f\n",compute_disorder(head));
     while (curr)

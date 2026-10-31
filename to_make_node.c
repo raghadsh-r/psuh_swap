@@ -99,7 +99,7 @@ void	free_str(char **str, int len)
 	free(str);
 }
 
-static int	count_word(char const *s, char c)
+int	count_word(char const *s, char c)
 {
 	int	i;
 	int	count;
