@@ -51,7 +51,22 @@ int chrak_if_is_number(char **ptr)
     return(1);
 }
 
-
+int cheak_duplicate(t_list *head)
+{
+    t_list *ptr;
+    while(head)
+    {
+        ptr = head ->next;
+        while (ptr)
+        {
+            if(head -> number == ptr -> number)
+                return (0);
+            ptr = ptr -> next;  
+        }
+        head = head -> next;
+    }
+    return (1);
+}
 int main(int argc, char **argv)
 {
     char **ptr;
@@ -87,10 +102,12 @@ int main(int argc, char **argv)
         }
             i++;
     }
-  t_list *curr = head; 
-while (curr)
-{
-    printf("%i\n", curr->number);
-    curr = curr->next;
-}
+    if(!cheak_duplicate(head))
+        return (0);
+    t_list *curr = head; 
+    while (curr)
+    {
+        printf("%i\n", curr->number);
+        curr = curr->next;
+    }
 }
