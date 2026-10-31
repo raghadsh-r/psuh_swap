@@ -77,7 +77,7 @@ unsigned int	ft_lstsize(t_list *lst)
 	count = 0;
 	str = lst;
 	if (!lst)
-		return (0);
+		return (00);
 	while (str)
 	{
 		str = str -> next;
