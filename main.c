@@ -67,12 +67,38 @@ int cheak_duplicate(t_list *head)
     }
     return (1);
 }
+
+double compute_disorder(t_list *head)
+{
+    double mistakes;
+    double total_pairs;
+    t_list *i;
+    t_list *j;
+
+    i = head;
+    mistakes = 0;
+    total_pairs = 0;
+    while(i)
+    {
+        j = i -> next;
+        while (j)
+        {   
+            total_pairs+=1;
+            if(i->number > j ->number)
+                mistakes+=1;
+            j = j -> next;
+        }
+        i = i -> next;
+    }
+    return (mistakes / total_pairs);
+}
 int main(int argc, char **argv)
 {
     char **ptr;
     int     i;
     int     j;
     t_list *point;
+    int len;
 
     i  = 0;
     j = 0;
@@ -102,10 +128,12 @@ int main(int argc, char **argv)
         }
             i++;
     }
-    free_str(ptr,ft_lstsize(head));
+    len = ft_lstsize(head);
+    free_str(ptr,len);
     if(!cheak_duplicate(head))
         return (0);
-    t_list *curr = head; 
+    t_list *curr = head;
+    printf("%f\n",compute_disorder(head));
     while (curr)
     {
         printf("%i\n", curr->number);
