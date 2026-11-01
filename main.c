@@ -22,6 +22,8 @@ int	ft_atoi(const char *nptr)
 		num = (num * 10) + (nptr[i] - '0');
 		i++;
 	}
+    if(num > 2147483647 && (num * sign) < -2147483648)
+        return(0);
 	return (num * sign);
 }
 int	ft_isdigit(int str)
@@ -92,14 +94,17 @@ double compute_disorder(t_list *head)
     }
     return (mistakes / total_pairs);
 }
+#include <time.h>
 int main(int argc, char **argv)
 {
+    clock_t start;
+    clock_t end;
+    start = clock();
     char **ptr;
     int     i;
     int     j;
     t_list *point;
     int len;
-
     i  = 0;
     j = 0;
     if(argc == 1)
@@ -122,7 +127,13 @@ int main(int argc, char **argv)
     while(ptr[i])
     {
         int z;
-        point = ft_lstnew(ft_atoi(ptr[i]));
+        int x = ft_atoi(ptr[i]);
+        if(!x)
+        {
+            printf(" integers outside the valid range");
+            return 0;
+        }
+        point = ft_lstnew(x);
         if(!point)
         {
             printf("allocate fail\n");   
@@ -153,5 +164,10 @@ int main(int argc, char **argv)
         printf("%i\n", curr->number);
         curr = curr->next;
     }
+    //printf("\n");
+    end = clock();
+    float seconds = (float)(end - start) / CLOCKS_PER_SEC;
+    printf("%f\n",seconds);
+    
     ft_lstclear(&head);
 }
