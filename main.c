@@ -1,173 +1,87 @@
-#include "header.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ralshraw <ralshraw@student.42amman.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/11/02 11:37:21 by ymuhsen           #+#    #+#             */
+/*   Updated: 2026/11/04 16:59:52 by ralshraw         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int	ft_atoi(const char *nptr)
-{
-	int		i;
-	size_t	num;
-	int		sign;
 
-	i = 0;
-	num = 0;
-	sign = 1;
-	while (nptr[i] == ' ' || (nptr[i] >= 9 && nptr[i] <= 13))
-		i++;
-	if (nptr[i] == '-' || nptr[i] == '+')
-	{
-		if (nptr[i] == '-')
-			sign *= -1;
-		i++;
-	}
-	while (nptr[i] >= '0' && nptr[i] <= '9' && nptr[i])
-	{
-		num = (num * 10) + (nptr[i] - '0');
-		i++;
-	}
-    if(num > 2147483647 && (num * sign) < -2147483648)
-        return(0);
-	return (num * sign);
-}
-int	ft_isdigit(int str)
-{
-	if (str >= '0' && str <= '9')
-		return (1);
-	return (0);
-}
+#include "push_swap.h"
 
-int chrak_if_is_number(char **ptr)
+our_node *stack_a(char **str,char **argv)
 {
     int i;
-    int j;
+    long content;
+    our_node *temp;
+    our_node *head;
 
     i = 0;
-    while(ptr[i])
+    head = NULL;
+    while(str[i])
     {
-            j = 0;
-            while(ptr[i][j])
-            {
-        	    if(!ft_isdigit(ptr[i][j]))
-                    return 0;
-                    j++;
-            }
-            i++;
-    }
-    return(1);
-}
-
-int cheak_duplicate(t_list *head)
-{
-    t_list *ptr;
-    while(head)
-    {
-        ptr = head ->next;
-        while (ptr)
+        content = ft_atoi(str[i]);
+        if(!check_range(str,argv,head,content))
+            return(NULL);
+        temp = lstnew(content);
+        if (!temp)
         {
-            if(head -> number == ptr -> number)
-                return (0);
-            ptr = ptr -> next;  
+            lstclear(&head);
+            frees(str,count_word(argv[1],' '));
+           return(NULL);  
         }
-        head = head -> next;
+        lstadd_back(&head,temp);
+        i++;
     }
-    return (1);
+    return (head);
 }
-
-double compute_disorder(t_list *head)
-{
-    double mistakes;
-    double total_pairs;
-    t_list *i;
-    t_list *j;
-
-    i = head;
-    mistakes = 0;
-    total_pairs = 0;
-    while(i)
-    {
-        j = i -> next;
-        while (j)
-        {   
-            total_pairs+=1;
-            if(i->number > j ->number)
-                mistakes+=1;
-            j = j -> next;
-        }
-        i = i -> next;
-    }
-    return (mistakes / total_pairs);
-}
-#include <time.h>
+#include <stdio.h>
 int main(int argc, char **argv)
 {
-    clock_t start;
-    clock_t end;
-    start = clock();
-    char **ptr;
+    char    **str;
     int     i;
-    int     j;
-    t_list *point;
-    int len;
-    i  = 0;
-    j = 0;
-    if(argc == 1)
-    {
-        printf("no input\n");    
-        return(0);
-    }
+    our_node *head;
+    our_node *h;
 
-    ptr = ft_split(argv[1],' ');
-    if(!ptr)
-        return(0);
-    if(!chrak_if_is_number(ptr))
-    {
-        printf("Invalid input\n");
-        free_str(ptr,count_word((char const *)ptr,' '));
-        return(0);
-    }
-    t_list *head;
-    head = NULL;
-    while(ptr[i])
-    {
-        int z;
-        int x = ft_atoi(ptr[i]);
-        if(!x)
-        {
-            printf(" integers outside the valid range");
-            return 0;
-        }
-        point = ft_lstnew(x);
-        if(!point)
-        {
-            printf("allocate fail\n");   
-            ft_lstclear(&head);
-            return 0;
-        }
-        ft_lstadd_back(&head,point);
-        if(!head)
-        {    
-            printf("allocate fail\n");   
-            ft_lstclear(&head);
-            return 0;
-        }
-            i++;
-    }
-    len = ft_lstsize(head);
-    free_str(ptr,len);
-    if(!cheak_duplicate(head))
-     {  
-        printf("found duplicate\n");   
-        ft_lstclear(&head);
+
+    i = 0;
+    if (argc == 1)
         return (0);
-     }
-    t_list *curr = head;
-    printf("%f\n",compute_disorder(head));
-    while (curr)
+    str = ft_split(argv[1], ' ');
+    if (!str)
+        return (0);
+    if(!cheak_digit(str,argv))
+        return (0);
+    head = stack_a(str,argv);
+    h = stack_a(str,argv);
+    if(!head)
+        return (0);
+    if(!check_dub(head,str,argv))
+        return (0);
+    printf("%f\n", disorder(head));
+    //sa_and_sb(head,'a');
+    our_node *her;
+    her = head;
+    while(head)
     {
-        printf("%i\n", curr->number);
-        curr = curr->next;
+        printf("%ia\n",head -> number);
+        head = head -> next;
     }
-    //printf("\n");
-    end = clock();
-    float seconds = (float)(end - start) / CLOCKS_PER_SEC;
-    printf("%f\n",seconds);
-    
-    ft_lstclear(&head);
+    our_node *hh;
+    hh = h;
+    while(h)
+    {
+        printf("%ib\n",h -> number);
+        h = h -> next;
+    }
+    ra_and_rb(her, 'b');
+    while(hh)
+    {
+        printf("%i\n",hh -> number);
+        hh = hh -> next;
+    }
 }
